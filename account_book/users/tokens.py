@@ -18,13 +18,16 @@ def generate_token(payload: dict, type: str):
     return encoded
 
 
-def decode_token(token):
-    token = str(token).replace('Bearer ', '')
+def decode_token(access_token, refresh_token):
+    access_token = str(access_token).replace('Bearer ', '')
+    refresh_token = str(refresh_token).replace('Bearer ', '')
     try:
-        decoded = jwt.decode(token, settings.env('JWT_SECRET_KEY'), algorithms=["HS256"])
+        decoded = jwt.decode(access_token, settings.env('JWT_SECRET_KEY'), algorithms=["HS256"])
     except jwt.ExpiredSignatureError:
-
-        return False
+        try:
+            decoded = jwt.decode(refresh_token, settings.env('JWT_SECRET_KEY'), algorithms=["HS256"])
+        except Exception as e:
+            return False
     except Exception as e:
         return False
     return decoded

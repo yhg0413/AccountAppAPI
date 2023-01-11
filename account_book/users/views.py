@@ -44,14 +44,17 @@ class AuthViewSet(viewsets.GenericViewSet):
                 "email": email,
             }
             access_token = generate_token(payload, "access")
+            refresh_token = generate_token(payload, "refresh")
             data = {
                 "results": {
-                    "access_token": access_token
+                    "access_token": access_token,
+                    "refresh_token": refresh_token,
                 }
             }
             r_status = status.HTTP_200_OK
             res = Response(data=data, status=r_status)
             res.set_cookie(key='jwt', value=access_token, httponly=True)
+            res.set_cookie(key='jwt_r', value=access_token, httponly=True)
             return res
         except ObjectDoesNotExist:
             data = {

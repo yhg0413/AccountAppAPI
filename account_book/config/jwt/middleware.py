@@ -9,16 +9,15 @@ class AuthenticationMiddleware:
         self.get_response = get_response
 
     def __call__(self, request):
-        print("custom middleware before next middleware/view")
-        token = request.COOKIES.get('jwt')
-        re_token = request.COOKIES.get('jwt_r')
-        if token:
-            data = decode_token(token)
+        access_token = request.COOKIES.get('jwt')
+        refresh_token = request.COOKIES.get('jwt_r')
+        if access_token and refresh_token:
+            data = decode_token(access_token,refresh_token)
             try:
                 user = User.objects.get(pk=data['userId'])
                 request._force_auth_user = user
             except ObjectDoesNotExist:
                 pass
         response = self.get_response(request)
-        print("custom middleware after response or previous middleware")
+
         return response
