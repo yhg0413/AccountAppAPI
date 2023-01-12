@@ -57,7 +57,7 @@ class ActionViewSet(viewsets.GenericViewSet):
 
     @action(methods=['GET'], detail=True)
     def shot_url(self, request, pk):
-        url = f"/api/article/{pk}"
+        url = f'/api/article/{pk}'
 
         try:
             short_cut = ShortCutUrlModels.objects.get(make_user=request.user, link=url)
@@ -83,7 +83,7 @@ def origin_redirect(request, new_link):
         if not short_cut.check_is_using_time():
             data = {
                 'results': {
-                    'mag': "해당 URL은 만료되었습니다.",
+                    'mag': '해당 URL은 만료되었습니다.',
                     'code': 'E3010'
                 }
             }
@@ -96,7 +96,7 @@ def origin_redirect(request, new_link):
     except ObjectDoesNotExist:
         data = {
             'results': {
-                'mag': "해당 URL은 존재하지 않습니다.",
+                'mag': '해당 URL은 존재하지 않습니다.',
                 'code': 'E4040'
             }
         }

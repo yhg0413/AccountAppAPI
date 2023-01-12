@@ -14,8 +14,8 @@ class RegisterViewTest(APITestCase):
     def test_view_register_user(self):
         client = APIClient()
         data = {
-            "email": 'test@test.com',
-            "password": "@TEST1234"
+            'email': 'test@test.com',
+            'password': '@TEST1234'
         }
         response = client.post('/users/signup', data)
         self.assertEquals(response.status_code, 200)
@@ -25,13 +25,13 @@ class RegisterViewTest(APITestCase):
 class AuthViewSetTest(APITestCase):
     @classmethod
     def setUpTestData(cls):
-        user = User.objects.create_user(email="test2@test.com", password="@TEST1234")
+        user = User.objects.create_user(email='test2@test.com', password='@TEST1234')
 
     def test_view_login(self):
         client = APIClient()
         data = {
-            "email": 'test2@test.com',
-            "password": "@TEST1234"
+            'email': 'test2@test.com',
+            'password': '@TEST1234'
         }
         response = client.post('/users/auth', data)
 

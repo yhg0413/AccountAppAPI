@@ -11,13 +11,13 @@ from users.models import User
 class ArticleAPITest(APITestCase):
     @classmethod
     def setUpTestData(cls):
-        user = User.objects.create_user(email="test2@test.com", password="@TEST1234")
+        user = User.objects.create_user(email='test2@test.com', password='@TEST1234')
 
     def test_view_create_article(self):
         client = APIClient()
         data = {
-            "email": 'test2@test.com',
-            "password": "@TEST1234"
+            'email': 'test2@test.com',
+            'password': '@TEST1234'
         }
         response = client.post('/users/auth', data)
 
@@ -33,8 +33,8 @@ class ArticleAPITest(APITestCase):
     def test_view_get_user_article_list(self):
         client = APIClient()
         data = {
-            "email": 'test2@test.com',
-            "password": "@TEST1234"
+            'email': 'test2@test.com',
+            'password': '@TEST1234'
         }
         response = client.post('/users/auth', data)
 
@@ -57,7 +57,7 @@ class ArticleAPITest(APITestCase):
 class ArticleDetailAPITest(APITestCase):
     @classmethod
     def setUpTestData(cls):
-        user = User.objects.create_user('test2@test.com', "@TEST1234")
+        user = User.objects.create_user('test2@test.com', '@TEST1234')
         cls.test_article = ArticleModels.objects.create(
             writer=user,
             use_money=10000,
@@ -70,8 +70,8 @@ class ArticleDetailAPITest(APITestCase):
         pk = self.test_article.id
         client = APIClient()
         data = {
-            "email": 'test2@test.com',
-            "password": "@TEST1234"
+            'email': 'test2@test.com',
+            'password': '@TEST1234'
         }
         response = client.post('/users/auth', data)
 
@@ -87,8 +87,8 @@ class ArticleDetailAPITest(APITestCase):
         pk = self.test_article.id
         client = APIClient()
         data = {
-            "email": 'test2@test.com',
-            "password": "@TEST1234"
+            'email': 'test2@test.com',
+            'password': '@TEST1234'
         }
         response = client.post('/users/auth', data)
 
@@ -109,8 +109,8 @@ class ArticleDetailAPITest(APITestCase):
         pk = self.test_article.id
         client = APIClient()
         data = {
-            "email": 'test2@test.com',
-            "password": "@TEST1234"
+            'email': 'test2@test.com',
+            'password': '@TEST1234'
         }
         response = client.post('/users/auth', data)
 
@@ -122,7 +122,7 @@ class ArticleDetailAPITest(APITestCase):
 class ActionViewSetAndShortUrlTest(APITestCase):
     @classmethod
     def setUpTestData(cls):
-        user = User.objects.create_user('test2@test.com', "@TEST1234")
+        user = User.objects.create_user('test2@test.com', '@TEST1234')
         ArticleModels.objects.create(
             writer=user,
             use_money=10000,
@@ -133,8 +133,8 @@ class ActionViewSetAndShortUrlTest(APITestCase):
     def test_view_action_copy(self):
         client = APIClient()
         data = {
-            "email": 'test2@test.com',
-            "password": "@TEST1234"
+            'email': 'test2@test.com',
+            'password': '@TEST1234'
         }
         response = client.post('/users/auth', data)
 
@@ -148,8 +148,8 @@ class ActionViewSetAndShortUrlTest(APITestCase):
     def test_view_short_cut(self):
         client = APIClient()
         data = {
-            "email": 'test2@test.com',
-            "password": "@TEST1234"
+            'email': 'test2@test.com',
+            'password': '@TEST1234'
         }
         response = client.post('/users/auth', data)
 

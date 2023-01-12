@@ -19,14 +19,14 @@ class ArticleModels(models.Model):
     objects = models.Manager()
 
     def __str__(self) -> str:
-        return f"{self.spending_date} - {self.use_money}"
+        return f'{self.spending_date} - {self.use_money}'
 
 
 class ShortCutUrlModels(models.Model):
     make_user = models.ForeignKey(AUTH_USER_MODEL, on_delete=models.CASCADE)
     linked_article = models.ForeignKey(ArticleModels, on_delete=models.CASCADE)
-    link = models.URLField("기존 링크", max_length=255)
-    new_link = models.URLField("단축 URL", default="")
+    link = models.URLField('기존 링크', max_length=255)
+    new_link = models.URLField('단축 URL', default='')
 
     is_using = models.BooleanField('사용 가능 여부', default=True)
 
@@ -36,7 +36,7 @@ class ShortCutUrlModels(models.Model):
     objects = models.Manager()
 
     def __str__(self):
-        return f"{self.link} / {self.new_link}"
+        return f'{self.link} / {self.new_link}'
 
     def check_is_using_time(self):
         if self.is_using:
