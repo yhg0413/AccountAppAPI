@@ -5,9 +5,9 @@ from config import settings
 
 def generate_token(payload: dict, type: str):
     if type == "access":
-        exp = datetime.datetime.utcnow() + datetime.timedelta(hours=1)
+        exp = datetime.datetime.utcnow() + datetime.timedelta(seconds=30)
     elif type == "refresh":
-        exp = datetime.datetime.utcnow() + datetime.timedelta(days=3)
+        exp = datetime.datetime.utcnow() + datetime.timedelta(days=1)
     else:
         raise Exception("Invalid token")
 
@@ -21,13 +21,21 @@ def generate_token(payload: dict, type: str):
 def decode_token(access_token, refresh_token):
     access_token = str(access_token).replace('Bearer ', '')
     refresh_token = str(refresh_token).replace('Bearer ', '')
+    new_access_token = None
     try:
         decoded = jwt.decode(access_token, settings.env('JWT_SECRET_KEY'), algorithms=["HS256"])
     except jwt.ExpiredSignatureError:
         try:
-            decoded = jwt.decode(refresh_token, settings.env('JWT_SECRET_KEY'), algorithms=["HS256"])
-        except Exception as e:
+            refresh_decoded = jwt.decode(refresh_token, settings.env('JWT_SECRET_KEY'), algorithms=["HS256"])
+            new_access_token = re_issue_token(refresh_decoded)
+            decoded = jwt.decode(new_access_token, settings.env('JWT_SECRET_KEY'), algorithms=["HS256"])
+        except Exception:
             return False
-    except Exception as e:
+    except Exception:
         return False
-    return decoded
+    return decoded,new_access_token
+
+def re_issue_token(decoded):
+    paylaod = decoded
+    jwt_token = generate_token(paylaod,"access")
+    return jwt_token

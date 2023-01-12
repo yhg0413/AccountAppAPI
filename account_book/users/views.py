@@ -52,10 +52,10 @@ class AuthViewSet(viewsets.GenericViewSet):
                 }
             }
             r_status = status.HTTP_200_OK
-            res = Response(data=data, status=r_status)
-            res.set_cookie(key='jwt', value=access_token, httponly=True)
-            res.set_cookie(key='jwt_r', value=access_token, httponly=True)
-            return res
+            response = Response(data=data, status=r_status)
+            response.set_cookie(key='jwt', value=access_token, httponly=True)
+            response.set_cookie(key='jwt_r', value=refresh_token, httponly=True)
+            return response
         except ObjectDoesNotExist:
             data = {
                 "results": {
@@ -83,10 +83,11 @@ class AuthViewSet(viewsets.GenericViewSet):
             }
         }
         r_status = status.HTTP_200_OK
-        res = Response(data, r_status)
-        res.delete_cookie('jwt')
+        response = Response(data, r_status)
+        response.delete_cookie('jwt')
+        response.delete_cookie('jwt_r')
 
-        return res
+        return response
 
 
 

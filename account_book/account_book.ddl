@@ -33,7 +33,15 @@ ALTER TABLE `users_user_user_permissions` ADD CONSTRAINT `users_user_user_permis
 ALTER TABLE `users_user_user_permissions` ADD CONSTRAINT `users_user_user_perm_permission_id_0b93982e_fk_auth_perm` FOREIGN KEY (`permission_id`) REFERENCES `auth_permission` (`id`);
 
 
-
+CREATE TABLE `article_articlemodels` (
+    `id` bigint AUTO_INCREMENT NOT NULL PRIMARY KEY,
+    `use_money` integer NOT NULL,
+    `content` longtext NULL,
+    `spending_date` date NOT NULL,
+    `created_at` datetime(6) NOT NULL,
+    `updated_at` datetime(6)NOT NULL,
+    `writer_id` bigint NOT NULL
+    );
 
 CREATE TABLE `article_shortcuturlmodels` (
     `id` bigint AUTO_INCREMENT NOT NULL PRIMARY KEY,
@@ -42,18 +50,11 @@ CREATE TABLE `article_shortcuturlmodels` (
     `is_using` bool NOT NULL,
     `created_at` datetime(6) NOT NULL,
     `updated_at` datetime(6) NOT NULL,
+    `linked_article_id` bigint NOT NULL,
     `make_user_id` bigint NOT NULL
 );
 
-CREATE TABLE `article_articlemodels` (
-    `id` bigint AUTO_INCREMENT NOT NULL PRIMARY KEY,
-    `use_money` integer NOT NULL,
-    `content` longtext NULL,
-    `spending_date` date NOT NULL,
-    `created_at` datetime(6) NOT NULL,
-    `updated_at` datetime(6) NOT NULL,
-    `writer_id` bigint NOT NULL
-);
-
-ALTER TABLE `article_shortcuturlmodels` ADD CONSTRAINT `article_shortcuturlmodels_make_user_id_c3264c7c_fk_users_user_id` FOREIGN KEY (`make_user_id`) REFERENCES `users_user` (`id`);
 ALTER TABLE `article_articlemodels` ADD CONSTRAINT `article_articlemodels_writer_id_65115b5a_fk_users_user_id` FOREIGN KEY (`writer_id`) REFERENCES `users_user` (`id`);
+ALTER TABLE `article_shortcuturlmodels` ADD CONSTRAINT `article_shortcuturlm_linked_article_id_7e74a847_fk_article_a` FOREIGN KEY (`linked_article_id`) REFERENCES `article_articlemodels` (`id`);
+ALTER TABLE `article_shortcuturlmodels` ADD CONSTRAINT `article_shortcuturlmodels_make_user_id_c3264c7c_fk_users_user_id` FOREIGN KEY (`make_user_id`) REFERENCES `users_user` (`id`);
+

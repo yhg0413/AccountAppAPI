@@ -24,6 +24,7 @@ class ArticleModels(models.Model):
 
 class ShortCutUrlModels(models.Model):
     make_user = models.ForeignKey(AUTH_USER_MODEL, on_delete=models.CASCADE)
+    linked_article = models.ForeignKey(ArticleModels, on_delete=models.CASCADE)
     link = models.URLField("기존 링크", max_length=255)
     new_link = models.URLField("단축 URL", default="")
 
@@ -41,6 +42,9 @@ class ShortCutUrlModels(models.Model):
         if self.is_using:
             if (self.created_at + datetime.timedelta(days=SHORT_CUT_HOLD_TIME)) < timezone.now():
                 self.is_using = False
+                self.save()
                 return False
+            else:
+                return True
         else:
-            return True
+            return False

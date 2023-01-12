@@ -13,4 +13,6 @@ class IsLoginOrLogout(permissions.BasePermission):
         if request.method != 'POST':
             return bool(request.user and request.user.is_authenticated)
         else:
+            if request.user.is_authenticated:
+                return False
             return True

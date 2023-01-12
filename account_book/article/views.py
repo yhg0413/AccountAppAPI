@@ -58,14 +58,17 @@ class ActionViewSet(viewsets.GenericViewSet):
     @action(methods=['GET'], detail=True)
     def shot_url(self, request, pk):
         url = f"/api/article/{pk}"
+
         try:
             short_cut = ShortCutUrlModels.objects.get(make_user=request.user, link=url)
             if not short_cut.check_is_using_time():
                 raise ObjectDoesNotExist
         except ObjectDoesNotExist:
+            article = ArticleModels.objects.get(pk=pk)
             new_link = SHORT_CUT_BASE_URL + convert()
             short_cut = ShortCutUrlModels.objects.create(
                 make_user=request.user,
+                linked_article=article,
                 link=url,
                 new_link=new_link
             )
@@ -76,7 +79,7 @@ class ActionViewSet(viewsets.GenericViewSet):
 @api_view(('GET',))
 def origin_redirect(request, new_link):
     try:
-        short_cut = ShortCutUrlModels.objects.get(new_link__contains=new_link,)
+        short_cut = ShortCutUrlModels.objects.get(new_link__contains=new_link)
         if not short_cut.check_is_using_time():
             data = {
                 'results': {
@@ -85,10 +88,11 @@ def origin_redirect(request, new_link):
                 }
             }
             r_status = status.HTTP_301_MOVED_PERMANENTLY
+            return Response(data=data, status=r_status)
         else:
-            data = ShortCutUrlSerializers(instance=short_cut,many=False)
+            serializer = ArticleSerializers(instance=short_cut.linked_article,many=False)
             r_status = status.HTTP_200_OK
-        return Response(data=data, status=r_status)
+            return Response(data=serializer.data, status=r_status)
     except ObjectDoesNotExist:
         data = {
             'results': {
